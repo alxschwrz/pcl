@@ -60,7 +60,7 @@ namespace pcl
       typedef typename SceneCloud::ConstPtr SceneCloudConstPtr;
 
       /** \brief Empty constructor. */
-      CorrespondenceGrouping () : scene_ (), model_scene_corrs_ () {}
+      CorrespondenceGrouping () : scene_ (), model_scene_corrs_ (), require_normals_(false) {}
 
       /** \brief destructor. */
       virtual ~CorrespondenceGrouping() 
@@ -112,7 +112,7 @@ namespace pcl
         return (model_scene_corrs_);
       }
 
-	   /** \brief Getter for the vector of characteristic scales associated to each cluster
+       /** \brief Getter for the vector of characteristic scales associated to each cluster
         * 
         * \return the vector of characteristic scales (assuming scale = model / scene)
         */
@@ -120,6 +120,21 @@ namespace pcl
       getCharacteristicScales () const
       {
         return (corr_group_scale_);
+      }
+
+      /** \brief Getter for require_normals_ parameter
+        *
+        * \return the require_normals_ value
+        */
+      bool
+      getRequiresNormals () { return require_normals_; }
+
+      /** \brief Sets input and scene normals. The function does nothing and should be reimplemented in the subclasses when needed.
+        */
+      virtual void
+      setInputAndSceneNormals (pcl::PointCloud<pcl::Normal>::Ptr & /*input_n*/, pcl::PointCloud<pcl::Normal>::Ptr & /*scene_n*/)
+      {
+
       }
 
       /** \brief Clusters the input correspondences belonging to different model instances.
@@ -138,9 +153,12 @@ namespace pcl
       /** \brief The correspondences between points in the input and the scene datasets. */
       CorrespondencesConstPtr model_scene_corrs_;
 
-	  /** \brief characteristic scale associated to each correspondence subset; 
-		* if the cg algorithm can not handle scale invariance, the size of the vector will be 0. */
-	  std::vector <double> corr_group_scale_;
+      /** \brief characteristic scale associated to each correspondence subset;
+        * if the cg algorithm can not handle scale invariance, the size of the vector will be 0. */
+      std::vector <double> corr_group_scale_;
+
+      /** \brief If the correspondence grouping algorithm requires normals or not*/
+      bool require_normals_;
 
       /** \brief The actual clustering method, should be implemented by each subclass.
         *
