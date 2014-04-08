@@ -47,7 +47,7 @@ if(build)
         set(VTK_SMOOTHING_TARGET_LINK_LIBRARIES vtkCommon vtkWidgets vtkGraphics)
     endif()
     
-    SET(BUILD_surface_on_nurbs 0 CACHE BOOL "Fitting NURBS to point-clouds using openNURBS" )
+    SET(BUILD_surface_on_nurbs 1 CACHE BOOL "Fitting NURBS to point-clouds using openNURBS" )
     IF(BUILD_surface_on_nurbs)
         include(src/3rdparty/opennurbs/openNURBS.cmake)
         include(src/on_nurbs/on_nurbs.cmake) 
